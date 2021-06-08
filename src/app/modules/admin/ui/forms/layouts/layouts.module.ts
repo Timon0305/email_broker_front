@@ -11,6 +11,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'app/shared/shared.module';
 import { FormsLayoutsComponent } from 'app/modules/admin/ui/forms/layouts/layouts.component';
+import {MatStepperModule} from "@angular/material/stepper";
+import {FuseCardModule} from "../../../../../../@fuse/components/card";
+import {AgGridModule} from "ag-grid-angular";
 
 export const routes: Route[] = [
     {
@@ -23,7 +26,7 @@ export const routes: Route[] = [
     declarations: [
         FormsLayoutsComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
         MatCheckboxModule,
@@ -34,7 +37,10 @@ export const routes: Route[] = [
         MatMenuModule,
         MatRadioModule,
         MatSelectModule,
-        SharedModule
+        MatStepperModule,
+        FuseCardModule,
+        SharedModule,
+        AgGridModule
     ]
 })
 export class FormsLayoutsModule
