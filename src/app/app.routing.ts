@@ -15,11 +15,6 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
-
-            {path: 'pages', children: [
-                {path: 'authentication', loadChildren: () => import('app/modules/admin/pages/authentication/authentication.module').then(m => m.AuthenticationModule)},
-            ]},
-
             {path: 'email', children: [
                     {path: '', loadChildren: () => import('app/modules/admin/ui/forms/layouts/layouts.module').then(m => m.FormsLayoutsModule)},
             ]},
