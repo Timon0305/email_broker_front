@@ -2,25 +2,33 @@ import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild, Vi
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
+import {ThemePalette} from "@angular/material/core";
+import {AcceptValidator, MaxSizeValidator} from '@angular-material-components/file-input';
 
 @Component({
-    selector     : 'forms-layouts',
-    templateUrl  : './layouts.component.html',
+    selector: 'forms-layouts',
+    templateUrl: './layouts.component.html',
+    styleUrls: ['./layouts.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormsLayoutsComponent implements OnInit, AfterViewInit
-{
-    horizontalStepperForm: FormGroup;
-    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+export class FormsLayoutsComponent implements OnInit, AfterViewInit {
+    createNewQuote: FormGroup;
+    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'remove'];
     dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    color: ThemePalette = 'primary';
+    disabled: boolean = false;
+    multiple: boolean = false;
+    accept: 'application/x-zip-compressed,image/*';
+    submitStatus = false;
+    file: File | null = null
+    fileSelected = false;
 
     /**
      * Constructor
      */
-    constructor(private _formBuilder: FormBuilder)
-    {
+    constructor(private _formBuilder: FormBuilder) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -30,9 +38,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
-        // Horizontal stepper form
+    ngOnInit(): void {
         this.createForm();
     }
 
@@ -41,15 +47,53 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit
     }
 
     createForm = () => {
-        this.horizontalStepperForm = this._formBuilder.group({
+        this.createNewQuote = this._formBuilder.group({
             step1: this._formBuilder.group({
-                email   : ['', [Validators.required, Validators.email]],
-                title : ['', Validators.required],
-                description: ['', Validators.required]
+                email: ['', [Validators.required, Validators.email]],
+                title: ['', Validators.required],
+                description: ['', Validators.required],
+                attachment: ['']
             }),
+            step2: this._formBuilder.group({
+                email1: [''],
+                title1: [''],
+                description1: [''],
+                attachment1: ['']
+            })
         });
     };
 
+    nextEvent = (event) => {
+        this.createNewQuote.patchValue({
+            step2: {
+                email1: this.createNewQuote.value.step1.email,
+                title1: this.createNewQuote.value.step1.title,
+                description1: this.createNewQuote.value.step1.description,
+                attachment1: this.file.name
+            }
+        });
+        this.createNewQuote.get('step2').disable()
+    };
+
+    advertiseImage(files: FileList | null): void  {
+        if (files) {
+            this.fileSelected = true
+            this.file = files.item(0);
+            this.createNewQuote.patchValue({
+                step1 : {
+                    attachment: files[0].name
+                }
+            })
+        }
+    };
+
+    valueSubmit = (event) => {
+        this.submitStatus = true;
+        if (this.createNewQuote.invalid) {
+            return;
+        }
+        console.log(this.createNewQuote.value.step1)
+    };
 }
 
 export interface PeriodicElement {

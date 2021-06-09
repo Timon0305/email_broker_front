@@ -15,6 +15,8 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {FuseCardModule} from "../../../../../../@fuse/components/card";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatCardModule} from "@angular/material/card";
+import {NgxMatFileInputModule} from "@angular-material-components/file-input";
 
 export const routes: Route[] = [
     {
@@ -27,7 +29,7 @@ export const routes: Route[] = [
     declarations: [
         FormsLayoutsComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
         MatCheckboxModule,
@@ -43,6 +45,8 @@ export const routes: Route[] = [
         MatPaginatorModule,
         FuseCardModule,
         SharedModule,
+        MatCardModule,
+        NgxMatFileInputModule,
     ]
 })
 export class FormsLayoutsModule

@@ -7,13 +7,13 @@
             <div class="mt-3 text-3xl font-bold mb-2">Create New Quote</div>
             <form style="width: 100%"
                 class="p-4 bg-card shadow rounded overflow-hidden"
-                [formGroup]="horizontalStepperForm">
+                [formGroup]="createNewQuote">
                 <mat-horizontal-stepper
                     [linear]="true"
                     #horizontalStepper>
                     <mat-step
                         [formGroupName]="'step1'"
-                        [stepControl]="horizontalStepperForm.get('step1')"
+                        [stepControl]="createNewQuote.get('step1')"
                         #horizontalStepperStep1>
                         <ng-template matStepLabel>Step 1/2</ng-template>
                         <p class="my-6 font-medium">
@@ -60,6 +60,32 @@
                             </mat-form-field>
                         </div>
 
+                        <div class="flex flex-col gt-xs:flex-row zone zone-picker">
+                            <mat-form-field *ngIf="!fileSelected">
+                                <ngx-mat-file-input
+                                    [formControlName]="'attachment'"
+                                    [accept]="accept"
+                                    [color]="color"
+                                    (click)="fileInput.click()">
+
+                                </ngx-mat-file-input>
+                            </mat-form-field>
+                            <mat-form-field *ngIf="fileSelected">
+                                <input
+                                    matInput
+                                    [formControlName]="'attachment'"
+                                    [placeholder]="'Attachment'"
+                                    (click)="fileInput.click()"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
+                            </mat-form-field>
+                            <input hidden type="file" #fileInput (change)="advertiseImage(fileInput.files)" />
+
+                        </div>
+
                         <div class="flex justify-end">
                             <button
                                 class="px-8"
@@ -67,18 +93,85 @@
                                 [color]="'primary'"
                                 [disabled]="horizontalStepperStep1.stepControl.pristine || horizontalStepperStep1.stepControl.invalid"
                                 type="button"
+                                (click)="nextEvent($event)"
                                 matStepperNext>
                                 Next
                             </button>
                         </div>
                     </mat-step>
 
-                    <mat-step>
+                    <mat-step
+                        [formGroupName]="'step2'"
+                        [stepControl]="createNewQuote.get('step2')"
+                    >
                         <ng-template matStepLabel>Step 2/2</ng-template>
                         <p class="my-6 font-medium">
                             Thank you for completing our form! You can reset the form if you would like to change your
                             information.
                         </p>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto">
+                                <input
+                                    matInput
+                                    [formControlName]="'email1'"
+                                    [placeholder]="'Email Address'"
+                                    [disabled]="true"
+                                    class="text-primary"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'title1'"
+                                    [placeholder]="'Title'"
+                                    [disabled]="true"
+                                    class="text-primary"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex">
+                            <mat-form-field class="fuse-mat-textarea flex-auto">
+                                <textarea
+                                    matInput
+                                    [formControlName]="'description1'"
+                                    [placeholder]="'Description'"
+                                    [disabled]="true"
+                                    class="text-primary"
+                                    [rows]="3"></textarea>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'attachment1'"
+                                    [placeholder]="'Attachment'"
+                                    class="text-primary"
+                                    disabled
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+
                         <div class="flex justify-end mt-8">
                             <button
                                 class="px-8 mr-2"
@@ -93,8 +186,8 @@
                                 mat-flat-button
                                 [color]="'primary'"
                                 type="reset"
-                                (click)="horizontalStepper.reset();">
-                                Reset
+                                (click)="valueSubmit($event)">
+                                Submit
                             </button>
                         </div>
                     </mat-step>
@@ -149,30 +242,39 @@
         <div class="flex-1 min-w-0 m-8">
             <!-- Breadcrumbs -->
             <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource" style="width: 100%">
+                <table mat-table [dataSource]="dataSource" class="table-width">
 
                     <!-- Position Column -->
                     <ng-container matColumnDef="position">
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> No. </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.position}} </td>
                     </ng-container>
 
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef> Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Name </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.name}} </td>
                     </ng-container>
 
                     <!-- Weight Column -->
                     <ng-container matColumnDef="weight">
-                        <th mat-header-cell *matHeaderCellDef> Weight </th>
-                        <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Weight </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.weight}} </td>
                     </ng-container>
 
                     <!-- Symbol Column -->
                     <ng-container matColumnDef="symbol">
-                        <th mat-header-cell *matHeaderCellDef> Symbol </th>
-                        <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Symbol </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.symbol}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="remove">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style cursor-pointer">
+                            <mat-icon
+                                class="icon-size-5 mr-3"
+                                [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                        </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
