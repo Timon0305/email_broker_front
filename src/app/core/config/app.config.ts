@@ -28,3 +28,5 @@ export const appConfig: AppConfig = {
     scheme: 'light',
     theme : 'default'
 };
+
+export const apiConfig = 'http://localhost:5000/api/'

@@ -4,6 +4,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {ThemePalette} from "@angular/material/core";
 import {AcceptValidator, MaxSizeValidator} from '@angular-material-components/file-input';
+import {CommonService} from "../../../../../core/services/common.service";
 
 @Component({
     selector: 'forms-layouts',
@@ -28,8 +29,10 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     /**
      * Constructor
      */
-    constructor(private _formBuilder: FormBuilder) {
-    }
+    constructor(
+        private _formBuilder: FormBuilder,
+        private commonService: CommonService
+        ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -92,7 +95,9 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         if (this.createNewQuote.invalid) {
             return;
         }
-        console.log(this.createNewQuote.value.step1)
+        this.commonService.saveQuote(this.createNewQuote.value.step1).subscribe(res => {
+            console.log(res)
+        })
     };
 }
 
