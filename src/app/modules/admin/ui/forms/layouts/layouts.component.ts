@@ -1,17 +1,26 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {ThemePalette} from "@angular/material/core";
-import {AcceptValidator, MaxSizeValidator} from '@angular-material-components/file-input';
 import {CommonService} from "../../../../../core/services/common.service";
+import {fuseAnimations} from "../../../../../../@fuse/animations";
 
 @Component({
     selector: 'forms-layouts',
     templateUrl: './layouts.component.html',
     styleUrls: ['./layouts.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations   : fuseAnimations
 })
 export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     createNewQuote: FormGroup;
@@ -25,14 +34,17 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     submitStatus = false;
     file: File | null = null
     fileSelected = false;
-
+    myInfo: any;
+    storage : any;
     /**
      * Constructor
      */
     constructor(
         private _formBuilder: FormBuilder,
-        private commonService: CommonService
-        ) {}
+        private commonService: CommonService,
+        private _changeDetectorRef: ChangeDetectorRef
+    ) {
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -43,6 +55,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
      */
     ngOnInit(): void {
         this.createForm();
+        this.storage =  localStorage.getItem('passcode')
     }
 
     ngAfterViewInit() {
@@ -55,23 +68,29 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                 email: ['', [Validators.required, Validators.email]],
                 title: ['', Validators.required],
                 description: ['', Validators.required],
+                quantity: ['', Validators.required],
+                unit: ['', Validators.required],
                 attachment: ['']
             }),
             step2: this._formBuilder.group({
                 email1: [''],
                 title1: [''],
                 description1: [''],
+                quantity1: ['', Validators.required],
+                unit1: ['', Validators.required],
                 attachment1: ['']
             })
         });
     };
 
-    nextEvent = (event) => {
+    nextEvent = () => {
         this.createNewQuote.patchValue({
             step2: {
                 email1: this.createNewQuote.value.step1.email,
                 title1: this.createNewQuote.value.step1.title,
                 description1: this.createNewQuote.value.step1.description,
+                quantity1: this.createNewQuote.value.step1.quantity,
+                unit1: this.createNewQuote.value.step1.unit,
                 attachment1: this.file.name
             }
         });
@@ -86,19 +105,46 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                 step1 : {
                     attachment: files[0].name
                 }
-            })
+            });
         }
     };
 
-    valueSubmit = (event) => {
+    valueSubmit = () => {
         this.submitStatus = true;
         if (this.createNewQuote.invalid) {
             return;
         }
-        this.commonService.saveQuote(this.createNewQuote.value.step1).subscribe(res => {
-            console.log(res)
-        })
+
+        this.storage = localStorage.getItem('passcode')
+
+        if (this.storage) {
+            this.commonService.addQuote(this.createNewQuote.value.step1, this.storage).subscribe(res => {
+                if (res.success === true) {
+                    this.myInfo = res.data;
+                    this._changeDetectorRef.detectChanges();
+                    this.fileUploadFunction(this.file, res.data._id);
+                } else {}
+            })
+        } else {
+            this.commonService.saveQuote(this.createNewQuote.value.step1).subscribe(res => {
+                if (res.success === true) {
+                    this.storage = res.data.passcode;
+                    localStorage.setItem('passcode', res.data.passcode)
+                    this.myInfo = res.data;
+                    this._changeDetectorRef.detectChanges();
+                    this.fileUploadFunction(this.file, res.data._id);
+                } else {}
+            })
+        }
     };
+
+    fileUploadFunction = (file, id) => {
+        this.commonService.uploadFile(file, id).subscribe(resp => {
+            if (resp.success === true) {
+
+            }
+        })
+    }
 }
 
 export interface PeriodicElement {

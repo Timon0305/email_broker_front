@@ -1,8 +1,6 @@
 <div class="flex flex-col flex-auto min-w-0">
-
-    <!-- Main -->
+       <!-- Main -->
     <div class="lg:flex md:block sm:block flex-auto justify-center w-full mx-auto p-6 sm:p-8">
-
         <div class="flex flex-col items-start m-8">
             <div class="mt-3 text-3xl font-bold mb-2">Create New Quote</div>
             <form style="width: 100%"
@@ -60,6 +58,33 @@
                             </mat-form-field>
                         </div>
 
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto">
+                                <input
+                                    matInput
+                                    [formControlName]="'quantity'"
+                                    [placeholder]="'Quantity'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:selector'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'unit'"
+                                    [placeholder]="'Unit'"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:currency-dollar'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+
                         <div class="flex flex-col gt-xs:flex-row zone zone-picker">
                             <mat-form-field *ngIf="!fileSelected">
                                 <ngx-mat-file-input
@@ -93,7 +118,7 @@
                                 [color]="'primary'"
                                 [disabled]="horizontalStepperStep1.stepControl.pristine || horizontalStepperStep1.stepControl.invalid"
                                 type="button"
-                                (click)="nextEvent($event)"
+                                (click)="nextEvent()"
                                 matStepperNext>
                                 Next
                             </button>
@@ -157,6 +182,35 @@
                         </div>
 
                         <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto">
+                                <input
+                                    matInput
+                                    [formControlName]="'quantity1'"
+                                    [placeholder]="'Quantity'"
+                                    class="text-primary"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:selector'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3">
+                                <input
+                                    matInput
+                                    [formControlName]="'unit1'"
+                                    [placeholder]="'Unit'"
+                                    class="text-primary"
+                                    required>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:currency-dollar'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col gt-xs:flex-row">
                             <mat-form-field class="flex-auto gt-xs:pr-3">
                                 <input
                                     matInput
@@ -185,8 +239,8 @@
                                 class="px-8"
                                 mat-flat-button
                                 [color]="'primary'"
-                                type="reset"
-                                (click)="valueSubmit($event)">
+                                type="submit"
+                                (click)="valueSubmit()">
                                 Submit
                             </button>
                         </div>
@@ -197,31 +251,60 @@
         <div class="lg:flex flex-col items-start m-8 ">
             <div class="mt-3 text-3xl font-bold mb-2"><br></div>
             <fuse-card class="flex flex-col  w-full p-8">
-                <div class="text-2xl font-semibold leading-tight">About Me</div>
+                <div class="text-2xl font-semibold leading-tight">About Quote</div>
                 <div class="mt-4">
-                    I’m a friendly kitchen assistant who suffers from a severe phobia of buttons.
+                    Successfully added your quote. You can check your detail which you just entered
                     <br><br>
-                    Brother of Elijah Jay Watkins, who has phobia of buttons and trust issues.
                 </div>
                 <hr class="w-full border-t my-6">
                 <div class="flex flex-col">
                     <div class="flex items-center">
                         <mat-icon
                             class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
-                        <span class="leading-none">London, UK</span>
+                            [svgIcon]="'heroicons_outline:key'"></mat-icon>
+                        <span class="leading-none">Passcode : {{myInfo?myInfo['passcode']:(this.storage)}}</span>
                     </div>
                     <div class="flex items-center mt-4">
                         <mat-icon
                             class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_solid:briefcase'"></mat-icon>
-                        <span class="leading-none">ACME Corp. Lead UX Designer</span>
+                            [svgIcon]="'heroicons_outline:mail-open'"></mat-icon>
+                        <span class="leading-none">Email : {{myInfo?myInfo['email']:''}}</span>
                     </div>
                     <div class="flex items-center mt-4">
                         <mat-icon
                             class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_solid:cake'"></mat-icon>
-                        <span class="leading-none">April, 24</span>
+                            [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                        <span class="leading-none">Title : {{myInfo?myInfo['title']:''}}</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                        <span class="leading-none">Description : {{myInfo?myInfo['description']:''}}</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_outline:gift'"></mat-icon>
+                        <span class="leading-none">Quantity : {{myInfo?myInfo['quantity']:''}}</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+                        <span class="leading-none">Unit : {{myInfo?myInfo['unit']:''}}</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_outline:link'"></mat-icon>
+                        <span class="leading-none">Attachment : {{myInfo?myInfo['_id'] + '.' + myInfo['attachment'].split('.')[1]:''}}</span>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <mat-icon
+                            class="icon-size-5 mr-3"
+                            [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
+                        <span class="leading-none">Created At : {{myInfo?myInfo['createdAt'].split('T')[0]:''}}</span>
                     </div>
                 </div>
                 <button

@@ -17,6 +17,9 @@ import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatCardModule} from "@angular/material/card";
 import {NgxMatFileInputModule} from "@angular-material-components/file-input";
+import {FuseAlertModule} from "../../../../../../@fuse/components/alert";
+import {ToastContainerModule, ToastrModule} from "ngx-toastr";
+import {NotifierModule} from "angular-notifier";
 
 export const routes: Route[] = [
     {
@@ -47,6 +50,10 @@ export const routes: Route[] = [
         SharedModule,
         MatCardModule,
         NgxMatFileInputModule,
+        FuseAlertModule,
+        ToastrModule.forRoot({ positionClass: 'inline' }),
+        ToastContainerModule,
+        NotifierModule
     ]
 })
 export class FormsLayoutsModule

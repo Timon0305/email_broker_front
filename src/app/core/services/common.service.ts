@@ -15,6 +15,18 @@ export class CommonService {
     }
 
     saveQuote(quoteInfo) : Observable<any> {
-        return this.httpClient.post(apiConfig + 'createQuote', quoteInfo)
+        return this.httpClient.post(apiConfig + 'customer/createQuote', quoteInfo)
+    };
+
+    addQuote(quoteInfo, passcode): Observable<any> {
+        return this.httpClient.post(apiConfig + 'customer/addQuote', {quoteInfo, passcode})
+    };
+
+    uploadFile(upload: any, name: string): Observable<any> {
+        const endPoint = apiConfig + 'customer/uploadFile';
+        let fileName = name + '.' + upload.name.substring(upload.name.lastIndexOf('.')+1)
+        const formData: FormData = new FormData();
+        formData.append('file', upload, fileName);
+        return this.httpClient.post(endPoint, formData)
     }
 }
