@@ -16,7 +16,7 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'email', children: [
-                    {path: '', loadChildren: () => import('app/modules/admin/ui/forms/layouts/layouts.module').then(m => m.FormsLayoutsModule)},
+                    {path: '', loadChildren: () => import('app/modules/admin/layouts.module').then(m => m.FormsLayoutsModule)},
             ]},
 
             {path: '**', redirectTo: ''}

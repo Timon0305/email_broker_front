@@ -14,6 +14,10 @@ export class CommonService {
     ) {
     }
 
+    getQuote(passcode): Observable<any> {
+        return this.httpClient.get(apiConfig + 'customer/getQuote?passcode=' + passcode);
+    };
+
     saveQuote(quoteInfo) : Observable<any> {
         return this.httpClient.post(apiConfig + 'customer/createQuote', quoteInfo)
     };
@@ -23,10 +27,15 @@ export class CommonService {
     };
 
     uploadFile(upload: any, name: string): Observable<any> {
+
         const endPoint = apiConfig + 'customer/uploadFile';
         let fileName = name + '.' + upload.name.substring(upload.name.lastIndexOf('.')+1)
         const formData: FormData = new FormData();
         formData.append('file', upload, fileName);
         return this.httpClient.post(endPoint, formData)
+    };
+
+    checkPasscode(passcode): Observable<any> {
+        return this.httpClient.get(apiConfig + 'customer/checkQuote?pass=' + passcode)
     }
 }

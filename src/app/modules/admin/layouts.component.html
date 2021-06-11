@@ -1,11 +1,11 @@
 <div class="flex flex-col flex-auto min-w-0">
-       <!-- Main -->
+    <!-- Main -->
     <div class="lg:flex md:block sm:block flex-auto justify-center w-full mx-auto p-6 sm:p-8">
         <div class="flex flex-col items-start m-8">
             <div class="mt-3 text-3xl font-bold mb-2">Create New Quote</div>
             <form style="width: 100%"
-                class="p-4 bg-card shadow rounded overflow-hidden"
-                [formGroup]="createNewQuote">
+                  class="p-4 bg-card shadow rounded overflow-hidden"
+                  [formGroup]="createNewQuote">
                 <mat-horizontal-stepper
                     [linear]="true"
                     #horizontalStepper>
@@ -307,13 +307,16 @@
                         <span class="leading-none">Created At : {{myInfo?myInfo['createdAt'].split('T')[0]:''}}</span>
                     </div>
                 </div>
+
                 <button
                     class="px-6 mt-8"
                     mat-flat-button
                     [color]="'primary'"
-                    [routerLink]="['./']">
-                    See complete bio
+                    (click)="openViewQuote()"
+                >
+                    Search Quote
                 </button>
+
             </fuse-card>
 
         </div>
@@ -328,27 +331,37 @@
                 <table mat-table [dataSource]="dataSource" class="table-width">
 
                     <!-- Position Column -->
-                    <ng-container matColumnDef="position">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> No. </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.position}} </td>
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Email </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.email}} </td>
                     </ng-container>
 
                     <!-- Name Column -->
-                    <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Name </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.name}} </td>
+                    <ng-container matColumnDef="title">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Title </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.title}} </td>
                     </ng-container>
 
                     <!-- Weight Column -->
-                    <ng-container matColumnDef="weight">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Weight </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.weight}} </td>
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Description </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.description}} </td>
                     </ng-container>
 
                     <!-- Symbol Column -->
-                    <ng-container matColumnDef="symbol">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Symbol </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.symbol}} </td>
+                    <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Quantity </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.quantity}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="unit">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Currency </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.unit}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="attachment">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Attachment </th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style">{{element.attachment?element.attachment.split('.')[1].toUpperCase():'No Attachment'}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="remove">
