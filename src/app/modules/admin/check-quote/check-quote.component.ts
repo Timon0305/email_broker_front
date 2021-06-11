@@ -45,8 +45,9 @@ export class CheckQuoteComponent implements OnInit {
         }
         this.commonService.checkPasscode(this.composeForm.value.passcode).subscribe(res => {
             if (res.success) {
-
+                window.alert('success')
             } else {
+                window.alert('Invalid PassCode')
                 this.matDialogRef.close()
             }
         })
