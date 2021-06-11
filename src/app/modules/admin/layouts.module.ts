@@ -21,6 +21,7 @@ import {FuseAlertModule} from "../../../@fuse/components/alert";
 import {ToastContainerModule, ToastrModule} from "ngx-toastr";
 import {NotifierModule} from "angular-notifier";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 export const routes: Route[] = [
     {
@@ -56,6 +57,7 @@ export const routes: Route[] = [
         ToastContainerModule,
         NotifierModule,
         MatDialogModule,
+        MatSnackBarModule
     ]
 })
 export class FormsLayoutsModule

@@ -15,6 +15,8 @@ import {CommonService} from "../../core/services/common.service";
 import {fuseAnimations} from "../../../@fuse/animations";
 import {MatDialog} from "@angular/material/dialog";
 import {CheckQuoteComponent} from "./check-quote/check-quote.component";
+import {ToastrService} from "../../core/toastr/toastr.service";
+
 
 @Component({
     selector: 'forms-layouts',
@@ -38,6 +40,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     fileSelected = false;
     myInfo: any;
     storage : any;
+
     /**
      * Constructor
      */
@@ -46,6 +49,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         private commonService: CommonService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _matDialog: MatDialog,
+        private toastrService: ToastrService
     ) {
     }
 
@@ -138,6 +142,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         if (this.storage) {
             this.commonService.addQuote(this.createNewQuote.value.step1, this.storage).subscribe(res => {
                 if (res.success === true) {
+                    this.toastrService.snackBarAction(res.msg)
                     this.myInfo = res.data;
                     this._changeDetectorRef.detectChanges();
                     this.fileUploadFunction(this.file, res.data._id);
@@ -165,7 +170,6 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     };
 
     openViewQuote = () => {
-
         const dialogRef = this._matDialog.open(CheckQuoteComponent)
         dialogRef.afterClosed().subscribe(() => {
             console.log('compose dialog was closed!')

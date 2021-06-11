@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {CommonService} from "../../../core/services/common.service";
+import {ToastrService} from "../../../core/toastr/toastr.service";
 
 @Component({
   selector: 'app-check-quote',
@@ -20,6 +21,7 @@ export class CheckQuoteComponent implements OnInit {
         public matDialogRef: MatDialogRef<CheckQuoteComponent>,
         private _formBuilder: FormBuilder,
         private commonService: CommonService,
+        private toastrService: ToastrService
     )
     {}
 
@@ -45,9 +47,9 @@ export class CheckQuoteComponent implements OnInit {
         }
         this.commonService.checkPasscode(this.composeForm.value.passcode).subscribe(res => {
             if (res.success) {
-                window.alert('success')
+                this.toastrService.snackBarAction(res.msg)
             } else {
-                window.alert('Invalid PassCode')
+                this.toastrService.snackBarAction(res.msg)
                 this.matDialogRef.close()
             }
         })
