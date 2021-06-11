@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-compare-quote',
-  templateUrl: './compare-quote.component.html',
-  styleUrls: ['./compare-quote.component.scss']
+    selector: 'app-compare-quote',
+    templateUrl: './compare-quote.component.html',
+    styleUrls: ['./compare-quote.component.scss']
 })
 export class CompareQuoteComponent implements OnInit {
 
-  constructor() { }
+    @Input() passcode: any
 
-  ngOnInit(): void {
-  }
+    constructor() {
+    }
+
+    ngOnInit(): void {
+    }
 
 }

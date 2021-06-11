@@ -52,7 +52,7 @@ export class VendorComponent implements OnInit {
             {
                 id         : 'plan-billing',
                 icon       : 'heroicons_outline:credit-card',
-                title      : 'Vendor Page',
+                title      : 'Submit Bid',
             }
         ];
 

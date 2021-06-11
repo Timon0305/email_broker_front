@@ -182,8 +182,5 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
 let ELEMENT_DATA: PeriodicElement[] = [];
 
 export interface PeriodicElement {
-    name: string;
-    position: number;
-    weight: number;
-    symbol: string;
+
 }

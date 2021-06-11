@@ -1,13 +1,12 @@
 import {Injectable} from "@angular/core";
 import {apiConfig} from '../config/app.config'
-import {BehaviorSubject, Observable} from "rxjs";
+import { Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 @Injectable({
     providedIn: 'root'
 })
 
 export class CommonService {
-    private currentServiceSubject : BehaviorSubject<any>;
     public currentService: Observable<any>;
     constructor(
         private httpClient: HttpClient
@@ -37,5 +36,9 @@ export class CommonService {
 
     checkPasscode(passcode): Observable<any> {
         return this.httpClient.get(apiConfig + 'customer/checkQuote?pass=' + passcode)
+    };
+
+    getBids(passcode): Observable<any>{
+        return this.httpClient.get(apiConfig + 'vendor/getBid?pass=' + passcode)
     }
 }

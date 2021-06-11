@@ -16,6 +16,10 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FuseAlertModule} from "../../../@fuse/components/alert";
 import {FuseAutogrowModule} from "../../../@fuse/directives/autogrow";
 import {SharedModule} from "../../shared/shared.module";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatRippleModule} from "@angular/material/core";
 
 export const vendorRouter: Route[] = [
     {
@@ -32,20 +36,24 @@ export const vendorRouter: Route[] = [
     SubmitQuoteComponent,
       VendorComponent
   ],
-  imports: [
-    CommonModule,
-      RouterModule.forChild(vendorRouter),
-      MatButtonModule,
-      MatFormFieldModule,
-      MatIconModule,
-      MatInputModule,
-      MatRadioModule,
-      MatSelectModule,
-      MatSidenavModule,
-      MatSlideToggleModule,
-      FuseAlertModule,
-      FuseAutogrowModule,
-      SharedModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(vendorRouter),
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatSidenavModule,
+        MatSlideToggleModule,
+        FuseAlertModule,
+        FuseAutogrowModule,
+        SharedModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatCheckboxModule,
+        MatRippleModule
+    ]
 })
 export class VendorModule { }

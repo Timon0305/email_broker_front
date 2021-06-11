@@ -13,7 +13,7 @@
             <!-- Header -->
             <div class="flex items-center justify-between m-8 mr-6 sm:my-10">
                 <!-- Title -->
-                <div class="text-4xl font-extrabold tracking-tight leading-none">Settings</div>
+                <div class="text-4xl font-extrabold tracking-tight leading-none">Quote Page</div>
                 <!-- Close button -->
                 <div class="lg:hidden">
                     <button
@@ -78,15 +78,15 @@
                     <ng-container [ngSwitch]="selectedPanel">
                         <!-- Account -->
                         <ng-container *ngSwitchCase="'account'">
-                            <app-invite-vendor></app-invite-vendor>
+                            <app-invite-vendor [passcode]="storage"></app-invite-vendor>
                         </ng-container>
                         <!-- Security -->
                         <ng-container *ngSwitchCase="'security'">
-                            <app-compare-quote></app-compare-quote>
+                            <app-compare-quote [passcode]="storage"></app-compare-quote>
                         </ng-container>
                         <!-- Plan & Billing -->
                         <ng-container *ngSwitchCase="'plan-billing'">
-                            <app-submit-quote></app-submit-quote>
+                            <app-submit-quote [passcode]="storage"></app-submit-quote>
                         </ng-container>
                     </ng-container>
                 </div>
