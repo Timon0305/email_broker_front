@@ -49,7 +49,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         private commonService: CommonService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _matDialog: MatDialog,
-        private toastrService: ToastrService
+        private toastrService: ToastrService,
     ) {
     }
 
@@ -143,6 +143,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
             this.commonService.addQuote(this.createNewQuote.value.step1, this.storage).subscribe(res => {
                 if (res.success === true) {
                     this.toastrService.snackBarAction(res.msg)
+                    this.getCustomerQuote();
                     this.myInfo = res.data;
                     this._changeDetectorRef.detectChanges();
                     this.fileUploadFunction(this.file, res.data._id);
@@ -154,6 +155,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                     this.storage = res.data.passcode;
                     localStorage.setItem('passcode', res.data.passcode)
                     this.myInfo = res.data;
+                    this.getCustomerQuote();
                     this._changeDetectorRef.detectChanges();
                     this.fileUploadFunction(this.file, res.data._id);
                 } else {}
@@ -164,7 +166,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     fileUploadFunction = (file, id) => {
         this.commonService.uploadFile(file, id).subscribe(resp => {
             if (resp.success === true) {
-
+                this.getCustomerQuote();
             }
         })
     };

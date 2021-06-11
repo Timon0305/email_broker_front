@@ -22,6 +22,7 @@ import {ToastContainerModule, ToastrModule} from "ngx-toastr";
 import {NotifierModule} from "angular-notifier";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {CheckQuoteComponent} from "./check-quote/check-quote.component";
 
 export const routes: Route[] = [
     {
@@ -32,7 +33,8 @@ export const routes: Route[] = [
 
 @NgModule({
     declarations: [
-        FormsLayoutsComponent
+        FormsLayoutsComponent,
+        CheckQuoteComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

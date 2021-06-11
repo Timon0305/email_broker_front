@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {CommonService} from "../../../core/services/common.service";
 import {ToastrService} from "../../../core/toastr/toastr.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-check-quote',
@@ -13,6 +14,7 @@ import {ToastrService} from "../../../core/toastr/toastr.service";
 export class CheckQuoteComponent implements OnInit {
 
     composeForm: FormGroup;
+    storage : any;
 
     /**
      * Constructor
@@ -21,13 +23,15 @@ export class CheckQuoteComponent implements OnInit {
         public matDialogRef: MatDialogRef<CheckQuoteComponent>,
         private _formBuilder: FormBuilder,
         private commonService: CommonService,
-        private toastrService: ToastrService
+        private toastrService: ToastrService,
+        private _router: Router,
     )
     {}
 
     ngOnInit(): void
     {
         // Create the form
+        this.storage =  localStorage.getItem('passcode');
         this.composeForm = this._formBuilder.group({
             passcode     : ['', [Validators.required]],
         });
@@ -47,11 +51,12 @@ export class CheckQuoteComponent implements OnInit {
         }
         this.commonService.checkPasscode(this.composeForm.value.passcode).subscribe(res => {
             if (res.success) {
-                this.toastrService.snackBarAction(res.msg)
+                this.toastrService.snackBarAction(res.msg);
+                this._router.navigate(['vendor/index', this.storage])
             } else {
                 this.toastrService.snackBarAction(res.msg)
-                this.matDialogRef.close()
             }
+            this.matDialogRef.close()
         })
     }
 }
