@@ -142,11 +142,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         if (this.storage) {
             this.commonService.addQuote(this.createNewQuote.value.step1, this.storage).subscribe(res => {
                 if (res.success === true) {
-                    this.toastrService.snackBarAction(res.msg)
-                    this.getCustomerQuote();
-                    this.myInfo = res.data;
-                    this._changeDetectorRef.detectChanges();
-                    this.fileUploadFunction(this.file, res.data._id);
+                    this.successForm(res)
                 } else {}
             })
         } else {
@@ -154,10 +150,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                 if (res.success === true) {
                     this.storage = res.data.passcode;
                     localStorage.setItem('passcode', res.data.passcode)
-                    this.myInfo = res.data;
-                    this.getCustomerQuote();
-                    this._changeDetectorRef.detectChanges();
-                    this.fileUploadFunction(this.file, res.data._id);
+                    this.successForm(res)
                 } else {}
             })
         }
@@ -176,6 +169,19 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe(() => {
             console.log('compose dialog was closed!')
         })
+    };
+
+    resetForm = () => {
+        this.createNewQuote.reset();
+    };
+
+    successForm = (res) => {
+        this.toastrService.snackBarAction(res.msg)
+        this.getCustomerQuote();
+        this.resetForm();
+        this.myInfo = res.data;
+        this._changeDetectorRef.detectChanges();
+        this.fileUploadFunction(this.file, res.data._id);
     }
 }
 

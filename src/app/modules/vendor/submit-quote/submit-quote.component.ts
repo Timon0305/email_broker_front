@@ -13,7 +13,7 @@ import {ToastrService} from "../../../core/toastr/toastr.service";
 })
 export class SubmitQuoteComponent implements OnInit, AfterViewInit {
     @Input() passcode: any;
-    displayedColumns: string[] = ['email', 'title', 'description', 'quantity', 'unit', 'attachment', 'remove'];
+    displayedColumns: string[] = ['email', 'title', 'description', 'quantity', 'unit', 'attachment', 'price', 'remove'];
     dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     selection = new SelectionModel<PeriodicElement>(false, []);
@@ -45,6 +45,7 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
             description: new FormControl({value: '', disabled: true}),
             quantity: new FormControl({value: '', disabled: true}),
             unit: new FormControl({value: '', disabled: true}),
+            creatorPasscode: new FormControl(),
             price: new FormControl(),
         })
     }
@@ -73,12 +74,14 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
             description: event.description,
             quantity: event.quantity,
             unit: event.unit,
+            creatorPasscode: event.passcode,
             price: event.price?event.price:0
         })
     };
 
     submitQuotePrice = () => {
         let price = this.submitQuote.get('price').value;
+        let creatorPasscode = this.submitQuote.get('creatorPasscode').value;
         if (!this.quoteId) {
             this.toastrService.snackBarAction('Please select one quote');
             return;
@@ -87,15 +90,23 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
             this.toastrService.snackBarAction('Please your price');
             return;
         }
+
         let data = {
-            passcode: this.passcode,
+            vendorPasscode: this.passcode,
             creatorId: this.quoteId,
-            price: price
+            price: price,
+            creatorPasscode: creatorPasscode,
         }
         this.commonService.submitQuote(data).subscribe(res => {
-            console.log(res)
+            this.successForm(res)
         })
-    }
+    };
+
+    successForm = (res) => {
+        this.toastrService.snackBarAction(res.msg);
+        this.getBids();
+        this._changeDetectorRef.detectChanges();
+    };
 }
 
 let ELEMENT_DATA: PeriodicElement[] = [];
