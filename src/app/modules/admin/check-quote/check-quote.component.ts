@@ -51,8 +51,12 @@ export class CheckQuoteComponent implements OnInit {
         }
         this.commonService.checkPasscode(this.composeForm.value.passcode).subscribe(res => {
             if (res.success) {
+                localStorage.setItem('passcode', res.passcode);
+                this.storage = localStorage.getItem('passcode')
                 this.toastrService.snackBarAction(res.msg);
-                this._router.navigate(['vendor/index', this.storage])
+                setTimeout(()  => {
+                    this._router.navigate(['vendor/index', this.storage])
+                }, 2000)
             } else {
                 this.toastrService.snackBarAction(res.msg)
             }
