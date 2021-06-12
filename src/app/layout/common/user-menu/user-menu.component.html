@@ -3,6 +3,8 @@
     mat-icon-button
     [matMenuTriggerFor]="userActions">
     <span class="relative">
+        <mat-icon
+            [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
     </span>
 </button>
 
@@ -12,7 +14,7 @@
     <button mat-menu-item>
         <span class="flex flex-col leading-none">
             <span>Signed in as</span>
-            <span class="mt-1.5 text-md font-medium"></span>
+            <span class="mt-1.5 text-md font-medium">Passcode</span>
         </span>
     </button>
     <mat-divider class="my-2"></mat-divider>

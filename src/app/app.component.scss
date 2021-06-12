@@ -4,3 +4,15 @@
     width: 100%;
     height: 100%;
 }
+@import '~ngx-toastr/toastr';
+
+.mat-snack-bar-container {
+    background: #4f46e5 !important
+}
+
+body.light .mat-snack-bar-container, body .light .mat-snack-bar-container {
+    color: white!important;
+}
+.mat-simple-snackbar-action > .mat-button>.mat-button-wrapper {
+    color: white!important;
+}

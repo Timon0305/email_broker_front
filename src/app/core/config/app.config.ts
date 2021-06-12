@@ -24,7 +24,9 @@ export interface AppConfig
  * FuseConfigService and its methods.
  */
 export const appConfig: AppConfig = {
-    layout: 'modern',
+    layout: 'material',
     scheme: 'light',
     theme : 'default'
 };
+
+export const apiConfig = 'http://localhost:5000/api/'
