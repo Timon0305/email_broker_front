@@ -1,18 +1,9 @@
 <div
-    class="flex flex-auto justify-center w-full mx-auto ">
+    class="block flex-auto justify-center w-full mx-auto ">
     <div class="flex-1 min-w-0">
         <!-- Breadcrumbs -->
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" class="table-width">
-
-                <ng-container matColumnDef="select">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Select </th>
-                    <td mat-cell *matCellDef="let row">
-                        <mat-checkbox (click)="recordSelect(row)">
-                        </mat-checkbox>
-                    </td>
-                </ng-container>
-
                 <!-- Position Column -->
                 <ng-container matColumnDef="email">
                     <th mat-header-cell *matHeaderCellDef class="table-right-style"> Email </th>
@@ -38,7 +29,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="unit">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Currency </th>
+                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Unit </th>
                     <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.unit}} </td>
                 </ng-container>
 
@@ -59,10 +50,149 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row
                     *matRowDef="let row; columns: displayedColumns;"
+                    (click)="selection.toggle(row); recordSelect(row)"
+                    [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+                    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"
                 ></tr>
             </table>
 
             <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
         </div>
     </div>
+
+    <div class="w-full">
+
+        <!-- Form -->
+        <form [formGroup]="submitQuote">
+
+            <div class="mb-10 border-t"></div>
+
+            <!-- Section -->
+            <div class="w-full">
+                <div class="text-xl">Quote Details</div>
+                <div class="text-secondary">Submit your quote to customer.</div>
+            </div>
+            <div class="grid grid-cols-4 gap-6 w-full mt-8">
+
+                <div class="col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>User Email</mat-label>
+                        <mat-icon
+                            class="icon-size-5 text-primary"
+                            [svgIcon]="'heroicons_solid:mail-open'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'email'"
+                            class="text-primary"
+                            matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>Title</mat-label>
+                        <mat-icon
+                            class="icon-size-5 text-primary"
+                            [svgIcon]="'heroicons_solid:pencil'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'title'"
+                            class="text-primary"
+                            matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-span-4">
+                    <mat-form-field class="fuse-mat-textarea flex-auto w-full">
+                        <mat-label>Description</mat-label>
+                        <textarea
+                            [formControlName]="'description'"
+                            class="text-primary"
+                            [rows]="3"
+                            matInput></textarea>
+                        <mat-icon
+                            class="icon-size-5 text-primary"
+                            [svgIcon]="'heroicons_solid:menu-alt-2'"
+                            matPrefix></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-span-1 sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>Quantity</mat-label>
+                        <mat-icon
+                            class="icon-size-5 text-primary"
+                            [svgIcon]="'heroicons_solid:database'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'quantity'"
+                            class="text-primary"
+                            matInput>
+                    </mat-form-field>
+                </div>
+
+                <!-- Card expiration -->
+                <div class="col-span-2 sm:col-span-1">
+                    <mat-form-field
+                        class="fuse-mat-no-subscript w-full"
+                        [floatLabel]="'always'">
+                        <mat-label>Unit</mat-label>
+                        <mat-icon
+                            class="icon-size-5 text-primary"
+                            [svgIcon]="'heroicons_solid:gift'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'unit'"
+                            class="text-primary"
+                            matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Card CVC -->
+                <div class="col-span-2 sm:col-span-1">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>Price</mat-label>
+                        <mat-icon
+                            class="icon-size-5 text-primary"
+                            [svgIcon]="'heroicons_solid:currency-dollar'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'price'"
+                            type="number"
+                            min="0"
+                            class="text-primary"
+                            matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Country -->
+                <div class="col-span-4 sm:col-span-2">
+
+                </div>
+                <!-- ZIP -->
+                <div class="col-span-4 sm:col-span-2">
+
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="mt-11 mb-10 border-t"></div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end">
+                <button
+                    mat-stroked-button
+                    type="button">
+                    Cancel
+                </button>
+                <button
+                    class="ml-4"
+                    mat-flat-button
+                    type="button"
+                    (click)="submitQuotePrice()"
+                    [color]="'primary'">Submit
+                </button>
+            </div>
+        </form>
+
+    </div>
+
 </div>

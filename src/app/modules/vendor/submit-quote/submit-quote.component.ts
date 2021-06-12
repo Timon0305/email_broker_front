@@ -3,6 +3,8 @@ import {CommonService} from "../../../core/services/common.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {SelectionModel} from "@angular/cdk/collections";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {ToastrService} from "../../../core/toastr/toastr.service";
 
 @Component({
     selector: 'app-submit-quote',
@@ -11,25 +13,40 @@ import {SelectionModel} from "@angular/cdk/collections";
 })
 export class SubmitQuoteComponent implements OnInit, AfterViewInit {
     @Input() passcode: any;
-    displayedColumns: string[] = ['select', 'email', 'title', 'description', 'quantity', 'unit', 'attachment', 'remove'];
+    displayedColumns: string[] = ['email', 'title', 'description', 'quantity', 'unit', 'attachment', 'remove'];
     dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    selection = new SelectionModel<PeriodicElement>(true, []);
     @ViewChild(MatPaginator) paginator: MatPaginator;
-
+    selection = new SelectionModel<PeriodicElement>(false, []);
+    submitQuote: FormGroup;
+    quoteId: any;
     constructor(
         private commonService: CommonService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _formBuilder: FormBuilder,
+        private toastrService: ToastrService,
     ) {
     }
 
 
     ngOnInit(): void {
+        this.createForm();
         this.getBids();
         this.refresh();
     }
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
+    }
+
+    createForm() {
+        this.submitQuote = this._formBuilder.group({
+            email: new FormControl({value: '', disabled: true}),
+            title: new FormControl({value: '', disabled: true}),
+            description: new FormControl({value: '', disabled: true}),
+            quantity: new FormControl({value: '', disabled: true}),
+            unit: new FormControl({value: '', disabled: true}),
+            price: new FormControl(),
+        })
     }
 
     getBids = () => {
@@ -45,7 +62,39 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
     };
 
     recordSelect = (event) => {
-        console.log(event)
+        this.patchRecord(event);
+    }
+
+    patchRecord = (event) => {
+        this.quoteId = event._id;
+        this.submitQuote.patchValue({
+            email: event.email,
+            title: event.title,
+            description: event.description,
+            quantity: event.quantity,
+            unit: event.unit,
+            price: event.price?event.price:0
+        })
+    };
+
+    submitQuotePrice = () => {
+        let price = this.submitQuote.get('price').value;
+        if (!this.quoteId) {
+            this.toastrService.snackBarAction('Please select one quote');
+            return;
+        }
+        if (price === 0 || price === null) {
+            this.toastrService.snackBarAction('Please your price');
+            return;
+        }
+        let data = {
+            passcode: this.passcode,
+            creatorId: this.quoteId,
+            price: price
+        }
+        this.commonService.submitQuote(data).subscribe(res => {
+            console.log(res)
+        })
     }
 }
 

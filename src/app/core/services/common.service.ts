@@ -40,5 +40,11 @@ export class CommonService {
 
     getBids(passcode): Observable<any>{
         return this.httpClient.get(apiConfig + 'vendor/getBid?pass=' + passcode)
+    };
+
+    submitQuote(formData): Observable<any> {
+        return this.httpClient.post(apiConfig + 'vendor/submitQuote', {
+            formData
+        })
     }
 }
