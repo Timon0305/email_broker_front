@@ -1,1 +1,98 @@
-<p>invite-vendor works!</p>
+<div class="w-full">
+
+    <div class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mb-8">
+        <div class="flex flex-col sm:flex-row items-start justify-between">
+            <div class="text-lg font-medium tracking-tight leading-6 truncate">Your Quote "Title" is live now</div>
+        </div>
+        <div class="flex flex-col mt-2 divide-y">
+            <ng-container >
+                <div class="flex flex-row items-center justify-between py-4 px-0.5">
+                    <div class="flex flex-col">
+                        <div class="font-medium"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-center -ml-0.5 mt-2 sm:mt-1 space-y-1 sm:space-y-0 sm:space-x-3">
+                            <ng-container>
+                                <div class="flex items-center">
+                                    Here is your unique URL : <span class="ml-3 text-xl">"https://localhost:4200"</span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <button mat-icon-button >
+                        <mat-icon *ngIf="!copyStatus" class="text-accent" [svgIcon]="'heroicons_solid:clipboard-copy'" (click)="copyURL()"></mat-icon>
+                        <mat-icon *ngIf="copyStatus" class="text-primary" [svgIcon]="'heroicons_solid:clipboard-copy'" (click)="copyURL()"></mat-icon>
+                    </button>
+                </div>
+                <div class="flex flex-row items-center justify-between py-4 px-0.5">
+                    <div class="flex flex-col">
+                        <div class="font-medium"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-center -ml-0.5 mt-2 sm:mt-1 space-y-1 sm:space-y-0 sm:space-x-3">
+                            <ng-container>
+                                <div class="flex items-center">
+                                    Your unique passcode for this Quote is <span class="ml-3 text-2xl">{{passcode}}</span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <!-- Add team member -->
+    <div class="w-full">
+        <mat-form-field
+            class="fuse-mat-no-subscript w-full"
+            [floatLabel]="'always'">
+            <mat-label>Add vendor</mat-label>
+            <mat-icon
+                class="icon-size-5"
+                [svgIcon]="'heroicons_solid:user'"
+                matPrefix></mat-icon>
+            <input
+                matInput
+                [placeholder]="'Email address'">
+            <button
+                mat-icon-button
+                matSuffix>
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+
+    <!-- Team members -->
+    <div class="flex flex-col mt-8 divide-y border-t border-b">
+        <ng-container *ngFor="let member of members; trackBy: trackByFn;">
+            <div class="flex flex-col sm:flex-row sm:items-center py-6">
+                <div class="flex items-center">
+                    <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
+                        <ng-container *ngIf="member.avatar">
+                            <mat-icon
+                                class="text-hint text-2xl"
+                                [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                        </ng-container>
+                        <ng-container *ngIf="!member.avatar">
+                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                {{member.name.charAt(0)}}
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-secondary">{{member.email}}</div>
+                    </div>
+                </div>
+                <div class="flex items-center mt-4 sm:mt-0 sm:ml-auto">
+
+                    <div class="order-1 sm:order-2 sm:ml-3">
+                        <button mat-icon-button>
+                            <mat-icon
+                                class="text-hint"
+                                [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+</div>
