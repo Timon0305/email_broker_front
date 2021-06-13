@@ -20,6 +20,8 @@ import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRippleModule} from "@angular/material/core";
+import { SearchVendorComponent } from './invite-vendor/search-vendor/search-vendor.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 export const vendorRouter: Route[] = [
     {
@@ -34,7 +36,8 @@ export const vendorRouter: Route[] = [
     InviteVendorComponent,
     CompareQuoteComponent,
     SubmitQuoteComponent,
-      VendorComponent
+      VendorComponent,
+      SearchVendorComponent
   ],
     imports: [
         CommonModule,
@@ -47,6 +50,7 @@ export const vendorRouter: Route[] = [
         MatSelectModule,
         MatSidenavModule,
         MatSlideToggleModule,
+        MatDialogModule,
         FuseAlertModule,
         FuseAutogrowModule,
         SharedModule,

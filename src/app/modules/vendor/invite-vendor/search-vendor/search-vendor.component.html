@@ -1,0 +1,107 @@
+<div class="flex flex-col max-w-240 md:min-w-160 -m-6">
+
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg">Please invite vendors</div>
+        <button
+            mat-icon-button
+            (click)="saveAndClose()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="drawerMode"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer>
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex flex-col">
+
+            <!-- Main -->
+            <div class="flex-auto">
+
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
+
+                    <!-- Title -->
+                    <div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Vendor List</div>
+                        <div class="ml-0.5 font-medium text-secondary">
+                            <ng-container *ngIf="vendorCounts > 0">
+                                {{vendorCounts}}
+                            </ng-container>
+                            {{vendorCounts | i18nPlural: {
+                            '=0'   : 'No contacts',
+                            '=1'   : 'contact',
+                            'other': 'contacts'
+                        } }}
+                        </div>
+                    </div>
+
+                    <!-- Main actions -->
+                    <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
+                        <!-- Search -->
+                        <div class="flex-auto">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full min-w-50">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                <input
+                                    matInput
+                                    [formControl]="searchInputControl"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'Search vendor'"
+                                    (input)="getSearchVendors($event)"
+                                >
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contacts list -->
+                <div class="relative">
+                    <ng-container *ngIf="contacts$ && contacts$.length; else noContacts">
+                        <ng-container *ngFor="let contact of contacts$; let i = index; trackBy: trackByFn;">
+
+                            <a class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b">
+                                <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
+                                    <ng-container>
+                                        <mat-icon
+                                            class="text-hint text-2xl"
+                                            [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                                    </ng-container>
+                                </div>
+                                <div class="min-w-0 ml-4">
+                                    <div class="font-medium leading-5 truncate"
+                                         (click)="matDialogRef.close(['get', contact])">{{contact.email}}</div>
+                                </div>
+                            </a>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- No contacts -->
+                    <ng-template #noContacts>
+                        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center italic">There are no email!</div>
+                    </ng-template>
+
+                </div>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

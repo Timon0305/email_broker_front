@@ -46,5 +46,21 @@ export class CommonService {
         return this.httpClient.post(apiConfig + 'vendor/submitQuote', {
             formData
         })
+    };
+
+    getAllVendors(passcode: any, key: any): Observable<any> {
+        return this.httpClient.get(apiConfig + 'vendor/getAllVendors?pass=' + passcode + '&key='+key)
+    };
+
+    getInvitedVendor(passcode: any): Observable<any> {
+       return this.httpClient.get(apiConfig + 'vendor/getInvitedVendor?pass=' + passcode);
+    };
+
+    inviteVendor(creatorCode: string, vendorCode: string): Observable<any> {
+        return this.httpClient.post(apiConfig + 'vendor/inviteVendor', {creator: creatorCode, vendor: vendorCode})
+    };
+
+    deleteVendor(creatorCode: string, vendorCode: string): Observable<any> {
+        return this.httpClient.delete(apiConfig + 'vendor/deleteVendor?creator=' + creatorCode + '&vendor=' + vendorCode)
     }
 }

@@ -12,7 +12,9 @@
                         <div class="flex flex-col sm:flex-row sm:items-center -ml-0.5 mt-2 sm:mt-1 space-y-1 sm:space-y-0 sm:space-x-3">
                             <ng-container>
                                 <div class="flex items-center">
-                                    Here is your unique URL : <span class="ml-3 text-xl">"https://localhost:4200"</span>
+                                    Here is your unique URL : <span class="ml-3 text-xl italic underline font-mono">
+                                    <a [href]="uniqueURL" class="text-primary" target="_blank">{{uniqueURL}}</a>
+                                </span>
                                 </div>
                             </ng-container>
                         </div>
@@ -28,7 +30,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-center -ml-0.5 mt-2 sm:mt-1 space-y-1 sm:space-y-0 sm:space-x-3">
                             <ng-container>
                                 <div class="flex items-center">
-                                    Your unique passcode for this Quote is <span class="ml-3 text-2xl">{{passcode}}</span>
+                                    Your unique passcode for this Quote is <span class="ml-3 text-2xl italic font-mono">{{passcode}}</span>
                                 </div>
                             </ng-container>
                         </div>
@@ -49,6 +51,7 @@
                 matPrefix></mat-icon>
             <input
                 matInput
+                (click)="searchVendor()"
                 [placeholder]="'Email address'">
             <button
                 mat-icon-button
@@ -66,15 +69,10 @@
             <div class="flex flex-col sm:flex-row sm:items-center py-6">
                 <div class="flex items-center">
                     <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
-                        <ng-container *ngIf="member.avatar">
+                        <ng-container>
                             <mat-icon
                                 class="text-hint text-2xl"
                                 [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
-                        </ng-container>
-                        <ng-container *ngIf="!member.avatar">
-                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                                {{member.name.charAt(0)}}
-                            </div>
                         </ng-container>
                     </div>
                     <div class="ml-4">
@@ -86,6 +84,7 @@
                     <div class="order-1 sm:order-2 sm:ml-3">
                         <button mat-icon-button>
                             <mat-icon
+                                (click)="deleteInvitedVendor(member)"
                                 class="text-hint"
                                 [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                         </button>
