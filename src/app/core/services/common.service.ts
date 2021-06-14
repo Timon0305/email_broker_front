@@ -62,5 +62,9 @@ export class CommonService {
 
     deleteVendor(creatorCode: string, vendorCode: string): Observable<any> {
         return this.httpClient.delete(apiConfig + 'vendor/deleteVendor?creator=' + creatorCode + '&vendor=' + vendorCode)
+    };
+
+    getMyQuote(passcode: string): Observable<any> {
+        return this.httpClient.get(apiConfig + 'customer/getMyQuote?pass=' + passcode);
     }
 }
