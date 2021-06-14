@@ -1,6 +1,5 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ToastrService} from "../../../core/toastr/toastr.service";
-import {MatDialog} from "@angular/material/dialog";
 import {CommonService} from "../../../core/services/common.service";
 import {MatTableDataSource} from "@angular/material/table";
 
@@ -30,30 +29,11 @@ export class CompareQuoteComponent implements OnInit {
     getMyQuote = () => {
         ELEMENT_DATA = [];
         this.commonService.getMyQuote(this.passcode).subscribe(res => {
-            console.log('res', res);
-            const data = res.data;
             let longest = res.data.reduce((a, b) => {
                 return a.vendor.length > b.vendor.length ? a : b;
             });
             this.drawColumn(longest);
-
-            for (let i = 1; i <= data.length; i++) {
-                const subData = data[i - 1];
-                let vendorData = {};
-                if (subData.vendor && subData.vendor.length) {
-                    for (let j = 0; j < subData.vendor.length; j++) {
-                        vendorData[subData.vendor[j].name] = subData.vendor[j].price != null ? subData.vendor[j].price : "-";
-                    }
-                }
-                ELEMENT_DATA.push({
-                    ...{
-                        title: subData.title,
-                        quantity: subData.quantity
-                    },
-                    ...vendorData
-                })
-            }
-            this.refresh();
+            this.drawRow(res.data)
         })
     };
 
@@ -65,6 +45,43 @@ export class CompareQuoteComponent implements OnInit {
             headers.push(data + i);
         }
         this.displayedColumns = ['title', 'quantity'].concat(headers);
+    };
+
+    drawRow = (data) => {
+        let totalPrice = {}
+
+        for (let i = 1; i <= data.length; i++) {
+            const subData = data[i - 1];
+            let vendorData = {};
+            if (subData.vendor && subData.vendor.length) {
+                for (let j = 0; j < subData.vendor.length; j++) {
+                    vendorData[subData.vendor[j].name] = subData.vendor[j].price != null ? subData.vendor[j].price : "-";
+                    if (!totalPrice[subData.vendor[j].name]) {
+                        totalPrice[subData.vendor[j].name] = subData.vendor[j].calPrice;
+                    } else {
+                        if (totalPrice[subData.vendor[j].name] !== "-" && !isNaN(parseFloat(subData.vendor[j].calPrice))) {
+                            totalPrice[subData.vendor[j].name] += subData.vendor[j].calPrice;
+                        } else {
+                            totalPrice[subData.vendor[j].name] = "-";
+                        }
+                    }
+                }
+            }
+
+            ELEMENT_DATA.push({
+                ...{
+                    title: subData.title,
+                    quantity: subData.quantity
+                },
+                ...vendorData
+            });
+        }
+       ELEMENT_DATA.push({
+          ...{ title: '',
+              quantity: 'Total'},
+           ...totalPrice})
+
+        this.refresh();
     };
 
     refresh = () => {
