@@ -23,6 +23,7 @@ import {NotifierModule} from "angular-notifier";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {CheckQuoteComponent} from "./check-quote/check-quote.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 export const routes: Route[] = [
     {
@@ -59,7 +60,8 @@ export const routes: Route[] = [
         ToastContainerModule,
         NotifierModule,
         MatDialogModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        ReactiveFormsModule
     ]
 })
 export class FormsLayoutsModule

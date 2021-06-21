@@ -4,18 +4,16 @@ import {
     ChangeDetectorRef,
     Component,
     OnInit,
-    ViewChild,
     ViewEncapsulation
 } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {ThemePalette} from "@angular/material/core";
 import {CommonService} from "../../core/services/common.service";
 import {fuseAnimations} from "../../../@fuse/animations";
 import {MatDialog} from "@angular/material/dialog";
-import {CheckQuoteComponent} from "./check-quote/check-quote.component";
 import {ToastrService} from "../../core/toastr/toastr.service";
+import {Router} from "@angular/router";
+import {FormConfig} from "../../core/shared/constants";
+import {FormRow} from "../../core/shared/models";
 
 
 @Component({
@@ -28,10 +26,8 @@ import {ToastrService} from "../../core/toastr/toastr.service";
 })
 export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     createNewQuote: FormGroup;
-    displayedColumns: string[] = ['email', 'title', 'description', 'quantity', 'unit', 'attachment', 'remove'];
-    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    color: ThemePalette = 'primary';
+    composeForm: FormGroup;
+
     disabled: boolean = false;
     multiple: boolean = false;
     accept: 'application/x-zip-compressed,image/*';
@@ -40,6 +36,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     fileSelected = false;
     myInfo: any;
     storage : any;
+
 
     /**
      * Constructor
@@ -50,12 +47,10 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _matDialog: MatDialog,
         private toastrService: ToastrService,
+        private _router: Router,
     ) {
-    }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    }
 
     /**
      * On init
@@ -63,26 +58,12 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.createForm();
         this.storage =  localStorage.getItem('passcode');
-        this.getCustomerQuote();
+        this.checkForm();
     }
 
     ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-    }
 
-    getCustomerQuote = () => {
-        if (this.storage) {
-            this.commonService.getQuote(this.storage).subscribe(res => {
-                ELEMENT_DATA = res.data
-                this.refresh();
-            })
-        }
     }
-
-    refresh = () => {
-        this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-        this._changeDetectorRef.detectChanges();
-    };
 
     createForm = () => {
         this.createNewQuote = this._formBuilder.group({
@@ -90,20 +71,20 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                 email: ['', [Validators.required, Validators.email]],
                 title: ['', Validators.required],
                 description: ['', Validators.required],
-                quantity: ['', Validators.required],
-                unit: ['', Validators.required],
-                attachment: ['']
             }),
             step2: this._formBuilder.group({
                 email1: [''],
                 title1: [''],
                 description1: [''],
-                quantity1: ['', Validators.required],
-                unit1: ['', Validators.required],
-                attachment1: ['']
             })
         });
     };
+
+    checkForm = () => {
+        this.composeForm = this._formBuilder.group({
+            passcode     : ['', [Validators.required]],
+        });
+    }
 
     nextEvent = () => {
         this.createNewQuote.patchValue({
@@ -159,17 +140,29 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     fileUploadFunction = (file, id) => {
         this.commonService.uploadFile(file, id).subscribe(resp => {
             if (resp.success === true) {
-                this.getCustomerQuote();
+
             }
         })
     };
 
-    openViewQuote = () => {
-        const dialogRef = this._matDialog.open(CheckQuoteComponent)
-        dialogRef.afterClosed().subscribe(() => {
-            console.log('compose dialog was closed!')
+
+    send(): void {
+        if (this.composeForm.invalid) {
+            return
+        }
+        this.commonService.checkPasscode(this.composeForm.value.passcode).subscribe(res => {
+            if (res.success) {
+                localStorage.setItem('passcode', res.passcode);
+                this.storage = localStorage.getItem('passcode')
+                this.toastrService.snackBarAction(res.msg);
+                setTimeout(()  => {
+                    this._router.navigate(['vendor/index', this.storage])
+                }, 2000)
+            } else {
+                this.toastrService.snackBarAction(res.msg)
+            }
         })
-    };
+    }
 
     resetForm = () => {
         this.createNewQuote.reset();
@@ -177,15 +170,17 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
 
     successForm = (res) => {
         this.toastrService.snackBarAction(res.msg)
-        this.getCustomerQuote();
         this.resetForm();
         this.myInfo = res.data;
         this._changeDetectorRef.detectChanges();
         this.fileUploadFunction(this.file, res.data._id);
     }
+
 }
 
-let ELEMENT_DATA: PeriodicElement[] = [];
+let ELEMENT_DATA: PeriodicElement[] = [
+
+];
 
 export interface PeriodicElement {
 

@@ -1,6 +1,38 @@
+
 <div class="flex flex-col flex-auto min-w-0">
     <!-- Main -->
-    <div class="lg:flex md:block sm:block flex-auto justify-center w-full mx-auto p-6 sm:p-8">
+    <div class="col-span-2 pt-6 ml-8 mr-8 mb-0 sm:pt-6 sm:pl-8 sm:pr-8 sm:pb-0">
+        <div class="mt-3 text-3xl font-bold mb-2" style="text-align: right">Access Existing Quote, enter Passcode:</div>
+        <form
+            class="flex flex-col flex-auto overflow-y-auto"
+            [formGroup]="composeForm">
+            <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
+
+
+                <div class="flex-auto mr-10 mt-3" style="text-align: right" >
+                    <mat-form-field style="width: 300px">
+                        <input
+                            class="text-uppercase"
+                            matInput
+                            minlength="6"
+                            maxlength="6"
+                            [formControlName]="'passcode'">
+                    </mat-form-field>
+                </div>
+                <!-- Actions -->
+                <button
+                    class="order-first sm:order-last"
+                    mat-flat-button
+                    [color]="'primary'"
+                    (click)="send()">
+                    Send
+                </button>
+
+            </div>
+        </form>
+
+    </div>
+    <div class="flex flex-auto justify-between w-full mx-auto p-6 sm:p-8">
         <div class="flex flex-col items-start m-8">
             <div class="mt-3 text-3xl font-bold mb-2">Create New Quote</div>
             <form style="width: 100%"
@@ -58,58 +90,35 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto">
-                                <input
-                                    matInput
-                                    [formControlName]="'quantity'"
-                                    [placeholder]="'Quantity'"
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:selector'"></mat-icon>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <input
-                                    matInput
-                                    [formControlName]="'unit'"
-                                    [placeholder]="'Unit'"
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:currency-dollar'"></mat-icon>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row zone zone-picker">
-                            <mat-form-field *ngIf="!fileSelected">
-                                <ngx-mat-file-input
-                                    [formControlName]="'attachment'"
-                                    [accept]="accept"
-                                    [color]="color"
-                                    (click)="fileInput.click()">
-
-                                </ngx-mat-file-input>
-                            </mat-form-field>
-                            <mat-form-field *ngIf="fileSelected">
-                                <input
-                                    matInput
-                                    [formControlName]="'attachment'"
-                                    [placeholder]="'Attachment'"
-                                    (click)="fileInput.click()"
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
-                            </mat-form-field>
-                            <input hidden type="file" #fileInput (change)="advertiseImage(fileInput.files)" />
+                        <div class="mat-elevation-z8 mt-8 mb-8">
 
                         </div>
+
+<!--                        <div class="flex flex-col gt-xs:flex-row zone zone-picker">-->
+<!--                            <mat-form-field *ngIf="!fileSelected">-->
+<!--                                <ngx-mat-file-input-->
+<!--                                    [formControlName]="'attachment'"-->
+<!--                                    [accept]="accept"-->
+<!--                                    [color]="color"-->
+<!--                                    (click)="fileInput.click()">-->
+
+<!--                                </ngx-mat-file-input>-->
+<!--                            </mat-form-field>-->
+<!--                            <mat-form-field *ngIf="fileSelected">-->
+<!--                                <input-->
+<!--                                    matInput-->
+<!--                                    [formControlName]="'attachment'"-->
+<!--                                    [placeholder]="'Attachment'"-->
+<!--                                    (click)="fileInput.click()"-->
+<!--                                    required>-->
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5"-->
+<!--                                    matPrefix-->
+<!--                                    [svgIcon]="'heroicons_solid:document-text'"></mat-icon>-->
+<!--                            </mat-form-field>-->
+<!--                            <input hidden type="file" #fileInput (change)="advertiseImage(fileInput.files)" />-->
+
+<!--                        </div>-->
 
                         <div class="flex justify-end">
                             <button
@@ -181,51 +190,6 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto">
-                                <input
-                                    matInput
-                                    [formControlName]="'quantity1'"
-                                    [placeholder]="'Quantity'"
-                                    class="text-primary"
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:selector'"></mat-icon>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <input
-                                    matInput
-                                    [formControlName]="'unit1'"
-                                    [placeholder]="'Unit'"
-                                    class="text-primary"
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:currency-dollar'"></mat-icon>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col gt-xs:flex-row">
-                            <mat-form-field class="flex-auto gt-xs:pr-3">
-                                <input
-                                    matInput
-                                    [formControlName]="'attachment1'"
-                                    [placeholder]="'Attachment'"
-                                    class="text-primary"
-                                    disabled
-                                    required>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
-                            </mat-form-field>
-                        </div>
-
                         <div class="flex justify-end mt-8">
                             <button
                                 class="px-8 mr-2"
@@ -248,137 +212,8 @@
                 </mat-horizontal-stepper>
             </form>
         </div>
-        <div class="lg:flex flex-col items-start m-8 ">
-            <div class="mt-3 text-3xl font-bold mb-2"><br></div>
-            <fuse-card class="flex flex-col  w-full p-8">
-                <div class="text-2xl font-semibold leading-tight">About Quote</div>
-                <div class="mt-4">
-                    Successfully added your quote. You can check your detail which you just entered
-                    <br><br>
-                </div>
-                <hr class="w-full border-t my-6">
-                <div class="flex flex-col">
-                    <div class="flex items-center">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:key'"></mat-icon>
-                        <span class="leading-none">Passcode : {{myInfo?myInfo['passcode']:(this.storage)}}</span>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:mail-open'"></mat-icon>
-                        <span class="leading-none">Email : {{myInfo?myInfo['email']:''}}</span>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
-                        <span class="leading-none">Title : {{myInfo?myInfo['title']:''}}</span>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
-                        <span class="leading-none">Description : {{myInfo?myInfo['description']:''}}</span>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:gift'"></mat-icon>
-                        <span class="leading-none">Quantity : {{myInfo?myInfo['quantity']:''}}</span>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
-                        <span class="leading-none">Unit : {{myInfo?myInfo['unit']:''}}</span>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:link'"></mat-icon>
-                        <span class="leading-none">Attachment : {{myInfo?myInfo['_id'] + '.' + myInfo['attachment'].split('.')[1]:''}}</span>
-                    </div>
-                    <div class="flex items-center mt-4">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
-                        <span class="leading-none">Created At : {{myInfo?myInfo['createdAt'].split('T')[0]:''}}</span>
-                    </div>
-                </div>
-
-                <button
-                    class="px-6 mt-8"
-                    mat-flat-button
-                    [color]="'primary'"
-                    (click)="openViewQuote()"
-                >
-                    Search Quote
-                </button>
-
-            </fuse-card>
-
-        </div>
 
     </div>
 
-    <div
-        class="flex flex-auto justify-center w-full mx-auto p-6 sm:p-8">
-        <div class="flex-1 min-w-0 m-8">
-            <!-- Breadcrumbs -->
-            <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource" class="table-width">
 
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="email">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Email </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.email}} </td>
-                    </ng-container>
-
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="title">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Title </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.title}} </td>
-                    </ng-container>
-
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="description">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Description </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.description}} </td>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="quantity">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Quantity </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.quantity}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="unit">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Currency </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.unit}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="attachment">
-                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Attachment </th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style">{{element.attachment?element.attachment.split('.')[1].toUpperCase():'No Attachment'}}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="remove">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element" class="table-right-style cursor-pointer">
-                            <mat-icon
-                                class="icon-size-5 mr-3"
-                                [svgIcon]="'heroicons_solid:x'"></mat-icon>
-                        </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                </table>
-
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-            </div>
-        </div>
-    </div>
 </div>
