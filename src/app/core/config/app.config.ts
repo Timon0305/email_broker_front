@@ -29,5 +29,7 @@ export const appConfig: AppConfig = {
     theme : 'default'
 };
 
-// export const apiConfig = 'http://localhost:5000/api/'
-export const apiConfig = 'http://143.198.144.245:5000/api/'
+export const apiConfig = 'http://localhost:5000/api/'
+// export const apiConfig = 'http://143.198.144.245:5000/api/'
+
+export const attachConfig = 'http://localhost:5000/'

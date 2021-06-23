@@ -5,6 +5,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {SelectionModel} from "@angular/cdk/collections";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ToastrService} from "../../../core/toastr/toastr.service";
+import {attachConfig} from '../../../../app/core/config/app.config'
 
 @Component({
     selector: 'app-submit-quote',
@@ -20,6 +21,7 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
     submitQuote: FormGroup;
     quoteId: any;
     myData: any;
+    imageURL: string;
     constructor(
         private commonService: CommonService,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -41,6 +43,9 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
     getBids = () => {
         this.commonService.getBids(this.passcode).subscribe(res => {
             this.myData = res.myData[0];
+            if (this.myData && this.myData.attachment) {
+                this.imageURL = attachConfig + 'public/' + 'attachment';
+            }
             ELEMENT_DATA = res.data;
             this.refresh();
         })
