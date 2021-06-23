@@ -1,219 +1,66 @@
-<div
-    class="block flex-auto justify-center w-full mx-auto ">
-    <div class="flex-1 min-w-0">
-        <!-- Breadcrumbs -->
-        <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" class="table-width">
-                <!-- Position Column -->
-                <ng-container matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Email </th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.email}} </td>
-                </ng-container>
+<form [formGroup]="submitQuote">
+    <div
+        class="block flex-auto justify-center w-full mx-auto ">
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="title">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Title </th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.title}} </td>
-                </ng-container>
+        <div class="mt-3 text-xl font-bold mb-2 capitalize">Title: &nbsp;{{myData?.title}}</div>
+        <div class="mt-3 text-xl font-bold mb-2 capitalize mb-3">Description: &nbsp;{{myData?.description}}</div>
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" class="table-width">
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="item">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Item Name</th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.name}} </td>
+                    </ng-container>
 
-                <!-- Weight Column -->
-                <ng-container matColumnDef="description">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Description </th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.description}} </td>
-                </ng-container>
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Description</th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.description}} </td>
+                    </ng-container>
 
-                <!-- Symbol Column -->
-                <ng-container matColumnDef="quantity">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Quantity </th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.quantity}} </td>
-                </ng-container>
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Quantity</th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.quantity}} </td>
+                    </ng-container>
 
-                <ng-container matColumnDef="unit">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Unit </th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.unit}} </td>
-                </ng-container>
+                    <ng-container matColumnDef="unit">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Unit</th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style"> {{element.unit}} </td>
+                    </ng-container>
 
-                <ng-container matColumnDef="attachment">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Attachment </th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style">{{element.attachment?element.attachment.split('.')[1].toUpperCase():'No Attachment'}}</td>
-                </ng-container>
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef class="table-right-style"> Price</th>
+                        <td mat-cell *matCellDef="let element" class="table-right-style">
+                            <mat-form-field class="mt-3">
+                                <input matInput type="number" [formControlName]="'price'">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
 
-                <ng-container matColumnDef="price">
-                    <th mat-header-cell *matHeaderCellDef class="table-right-style"> Price </th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style">{{element.price?element.price:'None'}}</td>
-                </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row
+                        *matRowDef="let row; columns: displayedColumns;"
+                        (click)="selection.toggle(row);"
+                        [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+                        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"
+                    ></tr>
+                </table>
 
-                <ng-container matColumnDef="remove">
-                    <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element" class="table-right-style cursor-pointer">
-                        <mat-icon
-                            class="icon-size-5 mr-3"
-                            [svgIcon]="'heroicons_solid:x'"></mat-icon>
-                    </td>
-                </ng-container>
+                <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+        <div class="flex items-center justify-end mt-4">
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row
-                    *matRowDef="let row; columns: displayedColumns;"
-                    (click)="selection.toggle(row); recordSelect(row)"
-                    [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
-                    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"
-                ></tr>
-            </table>
-
-            <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                (click)="submitQuotePrice()"
+                [color]="'primary'">Submit
+            </button>
         </div>
     </div>
-
-    <div class="w-full">
-
-        <!-- Form -->
-        <form [formGroup]="submitQuote">
-
-            <div class="mb-10 border-t"></div>
-
-            <!-- Section -->
-            <div class="w-full">
-                <div class="text-xl">Quote Details</div>
-                <div class="text-secondary">Submit your quote to customer.</div>
-            </div>
-            <div class="grid grid-cols-4 gap-6 w-full mt-8">
-
-                <div class="col-span-2">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>User Email</mat-label>
-                        <mat-icon
-                            class="icon-size-5 text-primary"
-                            [svgIcon]="'heroicons_solid:mail-open'"
-                            matPrefix></mat-icon>
-                        <input
-                            [formControlName]="'email'"
-                            class="text-primary"
-                            matInput>
-                    </mat-form-field>
-                </div>
-
-                <div class="col-span-2">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>Title</mat-label>
-                        <mat-icon
-                            class="icon-size-5 text-primary"
-                            [svgIcon]="'heroicons_solid:pencil'"
-                            matPrefix></mat-icon>
-                        <input
-                            [formControlName]="'title'"
-                            class="text-primary"
-                            matInput>
-                    </mat-form-field>
-                </div>
-
-                <div class="col-span-4">
-                    <mat-form-field class="fuse-mat-textarea flex-auto w-full">
-                        <mat-label>Description</mat-label>
-                        <textarea
-                            [formControlName]="'description'"
-                            class="text-primary"
-                            [rows]="3"
-                            matInput></textarea>
-                        <mat-icon
-                            class="icon-size-5 text-primary"
-                            [svgIcon]="'heroicons_solid:menu-alt-2'"
-                            matPrefix></mat-icon>
-                    </mat-form-field>
-                </div>
-
-                <div class="col-span-1 sm:col-span-2">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>Quantity</mat-label>
-                        <mat-icon
-                            class="icon-size-5 text-primary"
-                            [svgIcon]="'heroicons_solid:database'"
-                            matPrefix></mat-icon>
-                        <input
-                            [formControlName]="'quantity'"
-                            class="text-primary"
-                            matInput>
-                    </mat-form-field>
-                </div>
-
-                <!-- Card expiration -->
-                <div class="col-span-2 sm:col-span-1">
-                    <mat-form-field
-                        class="fuse-mat-no-subscript w-full"
-                        [floatLabel]="'always'">
-                        <mat-label>Unit</mat-label>
-                        <mat-icon
-                            class="icon-size-5 text-primary"
-                            [svgIcon]="'heroicons_solid:gift'"
-                            matPrefix></mat-icon>
-                        <input
-                            [formControlName]="'unit'"
-                            class="text-primary"
-                            matInput>
-                    </mat-form-field>
-                </div>
-
-                <div class="col-span-2 sm:col-span-1 display-none" >
-                    <mat-form-field
-                        class="fuse-mat-no-subscript w-full"
-                        [floatLabel]="'always'">
-                        <mat-label>Passcode</mat-label>
-                        <mat-icon
-                            class="icon-size-5 text-primary"
-                            [svgIcon]="'heroicons_solid:gift'"
-                            matPrefix></mat-icon>
-                        <input
-                            [formControlName]="'creatorPasscode'"
-                            class="text-primary"
-                            matInput>
-                    </mat-form-field>
-                </div>
-                <!-- Card CVC -->
-                <div class="col-span-2 sm:col-span-1">
-                    <mat-form-field class="fuse-mat-no-subscript w-full">
-                        <mat-label>Price</mat-label>
-                        <mat-icon
-                            class="icon-size-5 text-primary"
-                            [svgIcon]="'heroicons_solid:currency-dollar'"
-                            matPrefix></mat-icon>
-                        <input
-                            [formControlName]="'price'"
-                            type="number"
-                            min="0"
-                            class="text-primary"
-                            matInput>
-                    </mat-form-field>
-                </div>
-                <!-- Country -->
-                <div class="col-span-4 sm:col-span-2">
-
-                </div>
-                <!-- ZIP -->
-                <div class="col-span-4 sm:col-span-2">
-
-                </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="mt-11 mb-10 border-t"></div>
-
-            <!-- Actions -->
-            <div class="flex items-center justify-end">
-                <button
-                    mat-stroked-button
-                    type="button">
-                    Cancel
-                </button>
-                <button
-                    class="ml-4"
-                    mat-flat-button
-                    type="button"
-                    (click)="submitQuotePrice()"
-                    [color]="'primary'">Submit
-                </button>
-            </div>
-        </form>
-
-    </div>
-
-</div>
+</form>

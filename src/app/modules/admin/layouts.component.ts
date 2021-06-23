@@ -125,21 +125,14 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
 
         this.storage = localStorage.getItem('passcode')
 
-        if (this.storage) {
-            this.commonService.addQuote(this.createNewQuote.value.step1, this.storage).subscribe(res => {
-                if (res.success === true) {
-                    this.successForm(res)
-                } else {}
-            })
-        } else {
-            this.commonService.saveQuote(this.createNewQuote.value.step1).subscribe(res => {
-                if (res.success === true) {
-                    this.storage = res.data.passcode;
-                    localStorage.setItem('passcode', res.data.passcode)
-                    this.successForm(res)
-                } else {}
-            })
-        }
+        this.createNewQuote.value.step1.items = ELEMENT_DATA;
+        this.commonService.saveQuote(this.createNewQuote.value.step1).subscribe(res => {
+            if (res.success === true) {
+                this.storage = res.data.passcode;
+                localStorage.setItem('passcode', res.data.passcode)
+                this.successForm(res)
+            } else {}
+        })
     };
 
     fileUploadFunction = (file, id) => {
@@ -147,6 +140,9 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
             if (resp.success === true) {
 
             }
+            setTimeout(()  => {
+                this._router.navigate(['vendor/index', this.storage])
+            }, 2000)
         })
     };
 

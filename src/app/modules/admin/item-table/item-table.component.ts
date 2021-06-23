@@ -12,6 +12,7 @@ export class ItemTableComponent implements OnInit {
     control: FormArray;
     mode: boolean;
     touchedRows: any;
+    addButtonStatus: boolean = true;
 
     @Output() onChangeEvent = new EventEmitter<any>();
 
@@ -28,7 +29,10 @@ export class ItemTableComponent implements OnInit {
         this.addRow();
         this.userTable.valueChanges.subscribe(res => {
            if (this.userTable.valid) {
+               this.addButtonStatus = true;
                this.onChangeEvent.emit(this.userTable.value);
+           } else {
+               this.addButtonStatus = false;
            }
         })
     }

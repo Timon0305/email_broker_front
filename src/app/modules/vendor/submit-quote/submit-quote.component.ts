@@ -13,12 +13,13 @@ import {ToastrService} from "../../../core/toastr/toastr.service";
 })
 export class SubmitQuoteComponent implements OnInit, AfterViewInit {
     @Input() passcode: any;
-    displayedColumns: string[] = ['email', 'title', 'description', 'quantity', 'unit', 'attachment', 'price', 'remove'];
+    displayedColumns: string[] = ['item', 'description', 'quantity', 'unit', 'price'];
     dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     selection = new SelectionModel<PeriodicElement>(false, []);
     submitQuote: FormGroup;
     quoteId: any;
+    myData: any;
     constructor(
         private commonService: CommonService,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -29,29 +30,24 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit(): void {
-        this.createForm();
         this.getBids();
         this.refresh();
+        this.createForm();
+    }
+
+    createForm(): void {
+        this.submitQuote = this._formBuilder.group({
+            price: ['']
+        })
     }
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
     }
 
-    createForm() {
-        this.submitQuote = this._formBuilder.group({
-            email: new FormControl({value: '', disabled: true}),
-            title: new FormControl({value: '', disabled: true}),
-            description: new FormControl({value: '', disabled: true}),
-            quantity: new FormControl({value: '', disabled: true}),
-            unit: new FormControl({value: '', disabled: true}),
-            creatorPasscode: new FormControl(),
-            price: new FormControl(),
-        })
-    }
-
     getBids = () => {
         this.commonService.getBids(this.passcode).subscribe(res => {
+            this.myData = res.myData[0];
             ELEMENT_DATA = res.data;
             this.refresh();
         })
@@ -62,44 +58,29 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
         this._changeDetectorRef.detectChanges();
     };
 
-    recordSelect = (event) => {
-        this.patchRecord(event);
-    }
-
-    patchRecord = (event) => {
-        this.quoteId = event._id;
-        this.submitQuote.patchValue({
-            email: event.email,
-            title: event.title,
-            description: event.description,
-            quantity: event.quantity,
-            unit: event.unit,
-            creatorPasscode: event.passcode,
-            price: event.price?event.price:0
-        })
-    };
 
     submitQuotePrice = () => {
-        let price = this.submitQuote.get('price').value;
-        let creatorPasscode = this.submitQuote.get('creatorPasscode').value;
-        if (!this.quoteId) {
-            this.toastrService.snackBarAction('Please select one quote');
-            return;
-        }
-        if (price === 0 || price === null) {
-            this.toastrService.snackBarAction('Please your price');
-            return;
-        }
-
-        let data = {
-            vendorPasscode: this.passcode,
-            creatorId: this.quoteId,
-            price: price,
-            creatorPasscode: creatorPasscode,
-        }
-        this.commonService.submitQuote(data).subscribe(res => {
-            this.successForm(res)
-        })
+        console.log(ELEMENT_DATA)
+        // let price = this.submitQuote.get('price').value;
+        // let creatorPasscode = this.submitQuote.get('creatorPasscode').value;
+        // if (!this.quoteId) {
+        //     this.toastrService.snackBarAction('Please select one quote');
+        //     return;
+        // }
+        // if (price === 0 || price === null) {
+        //     this.toastrService.snackBarAction('Please your price');
+        //     return;
+        // }
+        //
+        // let data = {
+        //     vendorPasscode: this.passcode,
+        //     creatorId: this.quoteId,
+        //     price: price,
+        //     creatorPasscode: creatorPasscode,
+        // }
+        // this.commonService.submitQuote(data).subscribe(res => {
+        //     this.successForm(res)
+        // })
     };
 
     successForm = (res) => {
