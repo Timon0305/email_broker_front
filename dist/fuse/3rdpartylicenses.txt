@@ -347,6 +347,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+primeng
+MIT
+
 rrule
 BSD-3-Clause
 rrule.js: Library for working with recurrence rules for calendar dates.

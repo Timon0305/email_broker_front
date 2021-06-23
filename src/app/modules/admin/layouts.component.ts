@@ -14,6 +14,8 @@ import {ToastrService} from "../../core/toastr/toastr.service";
 import {Router} from "@angular/router";
 import {FormConfig} from "../../core/shared/constants";
 import {FormRow} from "../../core/shared/models";
+import {MatTableDataSource} from "@angular/material/table";
+import {SelectionModel} from "@angular/cdk/collections";
 
 
 @Component({
@@ -38,6 +40,9 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     storage : any;
 
 
+    displayedColumns: string[] = ['item', 'description', 'quantity', 'unit'];
+    dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+    selection = new SelectionModel<PeriodicElement>(false, []);
     /**
      * Constructor
      */
@@ -177,7 +182,9 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
     };
 
     customTable = (event) => {
-        console.log(event.tableRows)
+        ELEMENT_DATA = event.tableRows;
+        this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+        this._changeDetectorRef.detectChanges();
     }
 
 }
