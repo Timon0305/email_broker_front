@@ -15,7 +15,7 @@ export class InviteVendorComponent implements OnInit {
     @Input() passcode: any
     members: any[];
     uniqueURL: string;
-
+    myData: any;
     copyStatus: Boolean = false;
     constructor(
         private toastrService: ToastrService,
@@ -27,8 +27,15 @@ export class InviteVendorComponent implements OnInit {
 
     ngOnInit(): void {
         this.uniqueURL = window.location.href;
-        this.getInvitedVendor()
+        this.getInvitedVendor();
+        this.getQuote();
     };
+
+    getQuote = () => {
+        this.commonService.getQuote(this.passcode).subscribe(res => {
+            this.myData = res.data[0]
+        })
+    }
 
     getInvitedVendor = () => {
         this.commonService.getInvitedVendor(this.passcode).subscribe(res => {

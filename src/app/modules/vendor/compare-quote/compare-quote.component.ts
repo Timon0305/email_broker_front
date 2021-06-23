@@ -44,7 +44,7 @@ export class CompareQuoteComponent implements OnInit {
             let data = 'vendor'
             headers.push(data + i);
         }
-        this.displayedColumns = ['title', 'quantity'].concat(headers);
+        this.displayedColumns = ['item', 'quantity'].concat(headers);
     };
 
     drawRow = (data) => {
@@ -70,7 +70,7 @@ export class CompareQuoteComponent implements OnInit {
 
             ELEMENT_DATA.push({
                 ...{
-                    title: subData.title,
+                    item: subData.title,
                     quantity: subData.quantity
                 },
                 ...vendorData

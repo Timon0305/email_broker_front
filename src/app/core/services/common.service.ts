@@ -66,5 +66,5 @@ export class CommonService {
 
     getMyQuote(passcode: string): Observable<any> {
         return this.httpClient.get(apiConfig + 'customer/getMyQuote?pass=' + passcode);
-    }
+    };
 }
