@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnInit,
+    Output,
+    EventEmitter,
+    ViewEncapsulation
+} from '@angular/core';
 import {ToastrService} from "../../../core/toastr/toastr.service";
 import {MatDialog} from "@angular/material/dialog";
 import {SearchVendorComponent} from "./search-vendor/search-vendor.component";
@@ -17,6 +26,7 @@ export class InviteVendorComponent implements OnInit {
     uniqueURL: string;
     myData: any;
     copyStatus: Boolean = false;
+    @Output() selectUrl = new EventEmitter<any>();
     constructor(
         private toastrService: ToastrService,
         private _matDialog: MatDialog,
@@ -26,7 +36,7 @@ export class InviteVendorComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.uniqueURL = window.location.href;
+        this.uniqueURL = window.location.href
         this.getInvitedVendor();
         this.getQuote();
     };
@@ -84,5 +94,9 @@ export class InviteVendorComponent implements OnInit {
                 this.getInvitedVendor();
             }
         })
+    };
+
+    clickURL = (url) => {
+        this.selectUrl.emit(url)
     }
 }

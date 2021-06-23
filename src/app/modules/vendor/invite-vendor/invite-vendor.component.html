@@ -13,7 +13,7 @@
                             <ng-container>
                                 <div class="flex items-center">
                                     Here is your unique URL : <span class="ml-3 text-xl italic underline font-mono">
-                                    <a [href]="uniqueURL" class="text-primary" target="_blank">{{uniqueURL}}</a>
+                                    <a (click)="clickURL(uniqueURL)" class="text-primary" target="_blank">{{uniqueURL}}</a>
                                 </span>
                                 </div>
                             </ng-container>

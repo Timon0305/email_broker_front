@@ -130,5 +130,9 @@ export class VendorComponent implements OnInit {
     trackByFn(index: number, item: any): any
     {
         return item.id || index;
+    };
+
+    getUniqueUrl = (event) => {
+        this.selectedPanel = 'plan-billing'
     }
 }

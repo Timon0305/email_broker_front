@@ -78,7 +78,7 @@
                     <ng-container [ngSwitch]="selectedPanel">
                         <!-- Account -->
                         <ng-container *ngSwitchCase="'account'">
-                            <app-invite-vendor [passcode]="storage"></app-invite-vendor>
+                            <app-invite-vendor [passcode]="storage" (selectUrl) = "getUniqueUrl($event)"></app-invite-vendor>
                         </ng-container>
                         <!-- Security -->
                         <ng-container *ngSwitchCase="'security'">
