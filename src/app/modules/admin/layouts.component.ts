@@ -99,7 +99,7 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                 email1: this.createNewQuote.value.step1.email,
                 title1: this.createNewQuote.value.step1.title,
                 description1: this.createNewQuote.value.step1.description,
-                attachment1: this.file.name
+                attachment1: this.file?.name
             }
         });
         this.createNewQuote.get('step2').disable()
@@ -174,7 +174,14 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         this.resetForm();
         this.myInfo = res.data;
         this._changeDetectorRef.detectChanges();
-        this.fileUploadFunction(this.file, res.data._id);
+        if (this.file) {
+            this.fileUploadFunction(this.file, res.data._id);
+        } else {
+            setTimeout(()  => {
+                this._router.navigate(['vendor/index', this.storage])
+            }, 2000)
+        }
+
     };
 
     customTable = (event) => {

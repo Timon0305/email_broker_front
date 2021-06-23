@@ -12,8 +12,11 @@ export class CompareQuoteComponent implements OnInit {
 
     @Input() passcode: any;
     displayedColumns = [];
+    displayedColumns1 = ['vendor', 'price']
     dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+    dataSource1 = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA1);
     length: number;
+    lowPrice: any[];
 
     constructor(
         private toastrService: ToastrService,
@@ -32,6 +35,12 @@ export class CompareQuoteComponent implements OnInit {
             let longest = res.data.reduce((a, b) => {
                 return a.vendor.length > b.vendor.length ? a : b;
             });
+            res.lowPrice.sort((a, b) => {
+                if (a.count - b.count) {return -1}
+                else if (a.count - b.count) {return 1}
+                else {return 0}
+            })
+            this.lowPrice = res.lowPrice
             this.drawColumn(longest);
             this.drawRow(res.data)
         })
@@ -49,8 +58,8 @@ export class CompareQuoteComponent implements OnInit {
 
     drawRow = (data) => {
         let totalPrice = {}
-
         for (let i = 1; i <= data.length; i++) {
+
             const subData = data[i - 1];
             let vendorData = {};
             if (subData.vendor && subData.vendor.length) {
@@ -76,6 +85,8 @@ export class CompareQuoteComponent implements OnInit {
                 ...vendorData
             });
         }
+        this.drawLowestPriceTable();
+
        ELEMENT_DATA.push({
           ...{ title: '',
               quantity: 'Total'},
@@ -84,8 +95,14 @@ export class CompareQuoteComponent implements OnInit {
         this.refresh();
     };
 
+    drawLowestPriceTable = () => {
+        ELEMENT_DATA1 = this.lowPrice;
+        this.refresh()
+    };
+
     refresh = () => {
         this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+        this.dataSource1 = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA1);
         this._changeDetectorRef.detectChanges();
     };
 }
@@ -94,3 +111,4 @@ export interface PeriodicElement {
 }
 
 let ELEMENT_DATA: PeriodicElement[] = [];
+let ELEMENT_DATA1: PeriodicElement[] = [];

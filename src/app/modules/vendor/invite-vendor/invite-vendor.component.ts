@@ -33,7 +33,8 @@ export class InviteVendorComponent implements OnInit {
 
     getQuote = () => {
         this.commonService.getQuote(this.passcode).subscribe(res => {
-            this.myData = res.data[0]
+            this.myData = res.data[0];
+            this._changeDetectorRef.detectChanges();
         })
     }
 
