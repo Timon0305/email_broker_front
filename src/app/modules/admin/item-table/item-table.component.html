@@ -1,0 +1,51 @@
+<form [formGroup]="userTable" class="mat-elevation-z8">
+    <br>
+    <table class="table table-border" [ngClass]="{'table-dark': mode}" style="width: 100%">
+        <thead class="text-nowrap mt-3">
+        <th>Item</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th></th>
+        </thead>
+        <br>
+        <tbody>
+        <ng-container formArrayName="tableRows" *ngFor="let group of getFormControls.controls ; let i=index">
+            <tr *ngIf="group.get('isEditable').value" [formGroupName]="i">
+                <td>
+                    <mat-form-field style="width: 100%!important;">
+                        <input matInput type="text" formControlName="itemName" required>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field style="width: 100%!important;">
+                        <input matInput type="text" formControlName="itemDescription" required>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field style="width: 100%!important;">
+                        <input matInput formControlName="itemQuantity" required>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field style="width: 100%!important;">
+                        <input matInput type="text" formControlName="itemUnit" required>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-icon
+                        (click)="deleteRow(i)"
+                        class="icon-size-5 mr-3"
+                        [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                </td>
+            </tr>
+        </ng-container>
+        </tbody>
+    </table>
+    <br>
+    <div class="action-container text-right">
+        <button mat-raised-button type="submit" (click)="addRow()">Add More</button>
+    </div>
+    <br>
+</form>
+

@@ -24,6 +24,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {CheckQuoteComponent} from "./check-quote/check-quote.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import { ItemTableComponent } from './item-table/item-table.component';
 
 export const routes: Route[] = [
     {
@@ -36,6 +37,7 @@ export const routes: Route[] = [
     declarations: [
         FormsLayoutsComponent,
         CheckQuoteComponent,
+        ItemTableComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

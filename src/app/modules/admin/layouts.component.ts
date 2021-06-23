@@ -71,11 +71,13 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                 email: ['', [Validators.required, Validators.email]],
                 title: ['', Validators.required],
                 description: ['', Validators.required],
+                attachment: ['']
             }),
             step2: this._formBuilder.group({
                 email1: [''],
                 title1: [''],
                 description1: [''],
+                attachment1: ['']
             })
         });
     };
@@ -92,8 +94,6 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
                 email1: this.createNewQuote.value.step1.email,
                 title1: this.createNewQuote.value.step1.title,
                 description1: this.createNewQuote.value.step1.description,
-                quantity1: this.createNewQuote.value.step1.quantity,
-                unit1: this.createNewQuote.value.step1.unit,
                 attachment1: this.file.name
             }
         });
@@ -174,6 +174,10 @@ export class FormsLayoutsComponent implements OnInit, AfterViewInit {
         this.myInfo = res.data;
         this._changeDetectorRef.detectChanges();
         this.fileUploadFunction(this.file, res.data._id);
+    };
+
+    customTable = (event) => {
+        console.log(event.tableRows)
     }
 
 }
