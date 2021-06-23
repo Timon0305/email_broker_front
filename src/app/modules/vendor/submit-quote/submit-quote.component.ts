@@ -32,13 +32,6 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.getBids();
         this.refresh();
-        this.createForm();
-    }
-
-    createForm(): void {
-        this.submitQuote = this._formBuilder.group({
-            price: ['']
-        })
     }
 
     ngAfterViewInit() {
