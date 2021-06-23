@@ -53,27 +53,9 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
 
 
     submitQuotePrice = () => {
-        console.log(ELEMENT_DATA)
-        // let price = this.submitQuote.get('price').value;
-        // let creatorPasscode = this.submitQuote.get('creatorPasscode').value;
-        // if (!this.quoteId) {
-        //     this.toastrService.snackBarAction('Please select one quote');
-        //     return;
-        // }
-        // if (price === 0 || price === null) {
-        //     this.toastrService.snackBarAction('Please your price');
-        //     return;
-        // }
-        //
-        // let data = {
-        //     vendorPasscode: this.passcode,
-        //     creatorId: this.quoteId,
-        //     price: price,
-        //     creatorPasscode: creatorPasscode,
-        // }
-        // this.commonService.submitQuote(data).subscribe(res => {
-        //     this.successForm(res)
-        // })
+        this.commonService.submitQuote(ELEMENT_DATA, this.passcode).subscribe(res => {
+            this.successForm(res)
+        })
     };
 
     successForm = (res) => {
@@ -81,6 +63,14 @@ export class SubmitQuoteComponent implements OnInit, AfterViewInit {
         this.getBids();
         this._changeDetectorRef.detectChanges();
     };
+
+    inputPrice = (event, id) => {
+        for (let item of ELEMENT_DATA) {
+           if (item['_id'] === id) {
+               item['price'] = event.target.value
+           }
+        }
+    }
 }
 
 let ELEMENT_DATA: PeriodicElement[] = [];
